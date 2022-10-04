@@ -1,5 +1,7 @@
 # Como va el trafico
 
+![comovaeltrafico](resources/comovaeltrafico.png)
+
 ### Tareas
 - [ ] Añadir paginacion
 - [ ] Añadir limites en selectors

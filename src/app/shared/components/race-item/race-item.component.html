@@ -1,0 +1,42 @@
+<ng-container *ngIf="type === 'cameras'">
+  <h3>Camaras</h3>
+  <div class="card-grid">
+    <div class="card" *ngFor="let item of cameras">
+      <img [src]='item.image!' [alt]="item.id" default="assets/images/noImage.jpg" class="img">
+      <div class="coords">
+        <div class="coords-item">
+          <span>Lat</span> {{item.lat}}
+        </div>
+        <div class="coords-item">
+          <span>Lng</span> {{item.lng}}
+        </div>
+        <div class="coords-item">
+          <span>Kms</span> {{item.kmAprox}}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="type === 'incidents'">
+  <div class="card-grid">
+    <div class="card" *ngFor="let item of incidents">
+      <p>{{item.type | titlecase}}</p>
+      <small>{{item.reason | titlecase}}</small>
+      <div class="coords">
+        <div class="coords-item">
+          <span>Lat</span> {{item.lat}}
+        </div>
+        <div class="coords-item">
+          <span>Lng</span> {{item.lng}}
+        </div>
+        <div class="coords-item">
+          <span>Kms</span> {{item.kmAprox}}
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</ng-container>

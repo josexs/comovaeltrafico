@@ -1,0 +1,19 @@
+<div class="wrapper">
+  <h1>¿Como va el trafico?</h1>
+  <p *ngIf="!location.loading && location.noLocation">Necesitamos conocer tu ubicacion para mostrarte lo mas cercano a
+    ti
+    <strong (click)="getPosition()">Reintentar</strong>
+  </p>
+
+  <selectors [types]="types" [type]="type" [kms]="kms" [kmMax]="kmMax" (onChange)="getAllItems()"></selectors>
+
+  <p *ngIf="location.loading">Cargando...</p>
+
+  <ng-container *ngIf="!location.loading">
+    <map [lat]="location.lat" [lng]="location.lng"></map>
+
+    <ng-container>
+      <race-item [type]="type" [cameras]="cameras" [incidents]="incidents"></race-item>
+    </ng-container>
+  </ng-container>
+</div>

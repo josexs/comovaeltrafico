@@ -1,0 +1,9 @@
+<div>
+  <select class="select-type" name="type" [(ngModel)]="type" (ngModelChange)="onChange.emit()">
+    <option *ngFor="let type of types" [value]="type.value">{{ type.name }}</option>
+  </select>
+
+  <select class="select-kms" name="type" [(ngModel)]="kmMax" (ngModelChange)="onChange.emit()">
+    <option *ngFor="let km of kms" [value]="km">{{ km }} {{km === 1 ? 'km': 'kms'}} </option>
+  </select>
+</div>

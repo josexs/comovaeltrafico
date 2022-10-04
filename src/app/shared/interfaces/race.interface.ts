@@ -1,9 +1,4 @@
-export interface RaceI {
-  incidents: RaceItemGeneric[];
-  cameras: RaceItemGeneric[];
-}
-
-export interface RaceItemGeneric {
+export interface ItemGenericI {
   id: string;
   lat: string;
   lng: string;
@@ -20,4 +15,3 @@ export interface RaceItemGeneric {
   // varios
   kmAprox?: number;
 }
-

@@ -5,7 +5,7 @@
     <strong (click)="getPosition()">Reintentar</strong>
   </p>
 
-  <selectors [types]="types" [type]="type" [kms]="kms" [kmMax]="kmMax" (onChange)="getAllItems()"></selectors>
+  <selectors [type]="type" [kmMax]="kmMax" (onChange)="onChangeSelectors($event)"></selectors>
 
   <p *ngIf="location.loading">Cargando...</p>
 
@@ -13,7 +13,7 @@
     <map [lat]="location.lat" [lng]="location.lng"></map>
 
     <ng-container>
-      <race-item [type]="type" [cameras]="cameras" [incidents]="incidents"></race-item>
+      <race-item [type]="type" [items]="items.items"></race-item>
     </ng-container>
   </ng-container>
 </div>

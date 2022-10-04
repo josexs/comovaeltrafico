@@ -1,12 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { RaceItemGeneric } from '../../interfaces/race.interface';
+import { ItemGenericI } from '../../interfaces';
 
 @Component({
   selector: 'race-item',
   templateUrl: 'race-item.component.html',
 })
 export class RaceItemComponent {
-  @Input() cameras: RaceItemGeneric[] = [];
-  @Input() incidents: RaceItemGeneric[] = [];
-  @Input() type!: string;
+  @Input() items: ItemGenericI[] = [];
+  @Input() type!: 'cameras' | 'incidents' | 'radars';
 }

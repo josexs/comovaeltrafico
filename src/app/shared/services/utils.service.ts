@@ -6,6 +6,7 @@ export class UtilsService {
   types: NameValueI[] = [
     { name: 'Camaras', value: 'cameras' },
     { name: 'Incidencias', value: 'incidents' },
+    { name: 'Radares', value: 'radars' },
   ];
 
   getPosition(): Promise<{ lng: number; lat: number }> {

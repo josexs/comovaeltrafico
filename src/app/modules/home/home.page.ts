@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { RaceItemGeneric } from '../../shared/interfaces/race.interface';
 import { ApiService, UtilsService } from 'src/app/shared/services';
-import { NameValueI } from 'src/app/shared/interfaces/generic.interface';
+import { CoordsI, SelectorOutputI } from 'src/app/shared/interfaces';
+import { ItemsPaginationM } from 'src/app/shared/models';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.page.html',
 })
 export class HomePage implements OnInit {
-  type: 'cameras' | 'incidents' = 'cameras';
-  types: NameValueI[] = [];
-  cameras: RaceItemGeneric[] = [];
-  incidents: RaceItemGeneric[] = [];
+  type: 'cameras' | 'incidents' | 'radars' = 'cameras';
+  items = new ItemsPaginationM();
   location = {
     loading: true,
     noLocation: true,
@@ -19,18 +17,27 @@ export class HomePage implements OnInit {
     lng: 0,
   };
   kmMax = 20;
-  page = 1;
-  limit = 20;
-  kms = [1, 5, 20, 50, 100, 1000]
   constructor(
     private apiService: ApiService,
     private utilsService: UtilsService
   ) {}
 
   async ngOnInit() {
-    this.types = this.utilsService.types;
-    await this.getPosition();
-    this.getAllItems();
+    await this.checkPosition();
+  }
+
+  async checkPosition() {
+    const location = localStorage.getItem('location') ?? '';
+    if (location === '') {
+      await this.getPosition();
+    } else {
+      const locationJSON: CoordsI = JSON.parse(location);
+      this.location.lat = locationJSON.lat;
+      this.location.lng = locationJSON.lng;
+      this.location.loading = false;
+      this.location.noLocation = false;
+    }
+    this.getLastItems();
   }
 
   async getPosition() {
@@ -40,37 +47,31 @@ export class HomePage implements OnInit {
       this.location.lng = lng;
       this.location.loading = false;
       this.location.noLocation = false;
-      console.log(this.location)
+      localStorage.setItem('location', JSON.stringify({ lat, lng }));
     } catch {
       this.location.loading = false;
       this.location.noLocation = true;
     }
   }
 
-  async getAllItems() {
-    console.log(this.type);
+  async getLastItems() {
     const coords = { lat: this.location.lat, lng: this.location.lng };
-    const response = await this.apiService.getLastItems(
+    const response = await this.apiService.getLastItemsPaginated(
       this.type,
       coords,
-      this.kmMax,
-      this.page,
-      this.limit
+      this.kmMax
     );
-    switch (this.type) {
-      case 'cameras':
-        this.cameras = response;
-        break;
-      case 'incidents':
-        this.incidents = response;
-        break;
-
-      default:
-        break;
-    }
+    const init = (this.items.page - 1) * this.items.limit;
+    const offset = this.items.page * this.items.limit;
+    const items = response;
+    this.items.allItems = response;
+    this.items.items = items.slice(init, offset);
   }
 
-  handleMissingImage(event: Event) {
-    (event.target as HTMLImageElement).style.display = 'none';
+  onChangeSelectors(event: SelectorOutputI) {
+    console.log(event);
+    this.type = event.type;
+    this.kmMax = event.kmMax;
+    this.getLastItems();
   }
 }
